@@ -1,0 +1,7 @@
+font=DejaVu Sans Mono 11
+background-color=#292929
+height=300
+border-size=0
+border-radius=15
+default-timeout=5000
+padding=10

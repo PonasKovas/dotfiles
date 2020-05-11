@@ -1,0 +1,174 @@
+# Default config for sway
+#
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#
+# Read `man 5 sway` for a complete reference.
+
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Your preferred terminal emulator
+set $term termite
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu rlaunch -p -b
+
+### Output configuration
+
+output * bg /home/mykolas/Downloads/bg2.jpg fill
+
+### Input configuration
+
+input * xkb_numlock enable
+input * xkb_layout "lt,us"
+
+### Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym $mod+Return exec $term
+
+    # Kill focused window
+    bindsym $mod+Shift+q kill
+
+    # Start your launcher
+    bindsym $mod+d exec $menu
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+#
+# Moving around:
+#
+    # Move your focus around
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+#
+# Workspaces:
+#
+    # Switch to workspace
+    bindcode $mod+10 workspace "1:term"
+    bindcode $mod+11 workspace "2:web"
+    bindcode $mod+12 workspace "3:main"
+    bindcode $mod+13 workspace "4:assist"
+    bindcode $mod+14 workspace "5:files"
+    bindcode $mod+15 workspace "6:chat"
+    bindcode $mod+16 workspace "7:random"
+    bindcode $mod+17 workspace "8"
+    bindcode $mod+18 workspace "9"
+    bindcode $mod+19 workspace "10"
+    # Move focused container to workspace
+    bindcode $mod+Shift+10 move container to workspace "1:term"
+    bindcode $mod+Shift+11 move container to workspace "2:web"
+    bindcode $mod+Shift+12 move container to workspace "3:main"
+    bindcode $mod+Shift+13 move container to workspace "4:assist"
+    bindcode $mod+Shift+14 move container to workspace "5:files"
+    bindcode $mod+Shift+15 move container to workspace "6:chat"
+    bindcode $mod+Shift+16 move container to workspace "7:random"
+    bindcode $mod+Shift+17 move container to workspace "8"
+    bindcode $mod+Shift+18 move container to workspace "9"
+    bindcode $mod+Shift+19 move container to workspace "10"
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+bindsym Ctrl+$mod+Left resize shrink width 25px
+bindsym Ctrl+$mod+Down resize grow height 25px
+bindsym Ctrl+$mod+Up resize shrink height 25px
+bindsym Ctrl+$mod+Right resize grow width 25px
+
+#
+# Status Bar:
+#
+bar {
+    swaybar_command waybar
+}
+
+#
+# Misc window options
+#
+default_border none
+hide_edge_borders both
+
+#
+# Misc bindings
+#
+
+bindcode 107 exec grim -c "/home/mykolas/Pictures/screenshot$(date +%Y%m%d%H%M%S).png"
+
+bindcode 232 exec light -U 10
+bindcode 233 exec light -A 10
+
+bindsym $mod+R exec toggle_screen_recording
+
+#
+# Assign Workspaces:
+#
+assign [class="firefox"] "2:web"
+assign [app_id="termite"] "1:term"
+assign [app_id="sublime_text"] "4:assist"
+assign [class="discord"] "6:chat"
+assign [app_id="Thunar"] "5:files"
+
+include /etc/sway/config.d/*
+
+# autostart apps
+exec netctl-tray
+exec discord
+exec redshift -m wayland
